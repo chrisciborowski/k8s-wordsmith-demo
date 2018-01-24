@@ -1,0 +1,24 @@
+version: 2
+jobs:
+  build:
+    working_directory: /app
+    docker:
+      - image: docker:17.05.0-ce-git
+    steps:
+      - checkout
+      - setup_remote_docker
+      - run:
+          name: Install dependencies
+          command: |
+              docker-compose==1.18.0
+      - run:
+          name: Build application Docker image
+          command: |
+            docker-compose build -c docker-compose.yaml 
+      - deploy:
+          name: Push application Docker image
+          command: |
+              docker tag k8s-wordsmith-db "${ECR_ENDPOINT}/k8s-wordsmith-db:${CIRCLE_SHA1}"
+              docker tag k8s-wordsmith-db "${ECR_ENDPOINT}/k8s-wordsmith-db:${CIRCLE_SHA1}"
+              docker tag k8s-wordsmith-db "${ECR_ENDPOINT}/k8s-wordsmith-db:${CIRCLE_SHA1}"
+              docker push "${ECR_ENDPOINT}/app:${CIRCLE_SHA1}"
