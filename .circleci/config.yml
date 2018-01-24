@@ -10,14 +10,10 @@ jobs:
       - run:
           name: Install dependencies
           command: |
-             apk update
-             apk add curl
-      - run:
-          name: Install dependencies
-          command: |
-             curl -L https://github.com/docker/compose/releases/download/1.18.0/docker-compose-`uname -s`-`uname -m` > /docker-compose
-             chmod +x /docker-compose
-             /docker-compose -v
+             apk add --no-cache \
+              py-pip=9.0.0-r1
+            pip install \
+              docker-compose==1.18.0
       - run:
           name: Build application Docker image
           command: |
